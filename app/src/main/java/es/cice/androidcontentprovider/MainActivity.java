@@ -1,10 +1,17 @@
 package es.cice.androidcontentprovider;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import es.cice.androidcontentprovider.dataprovider.AndroidFlavorContract;
 
@@ -14,18 +21,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Cursor cursor=getContentResolver().query(AndroidFlavorContract.ANDROID_FLAVOR_CONTENT,
-                new String[]{
-                        AndroidFlavorContract.FLAVORS_CONTENT.PK_COLUMN,
-                AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN,
-                AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN},
-                null,null,null);
-        SimpleCursorAdapter adapter=new SimpleCursorAdapter(this,R.layout.grid_cell,cursor,
-                new String[]{AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN,
-                        AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN},
-                new int[]{R.id.androidFlavorNameTV,R.id.androidFlavorImageIV},0);
-        GridView flavorGV= (GridView) findViewById(R.id.flavors_grid);
-        flavorGV.setAdapter(adapter);
         Flavor[] flavors = {
                 new Flavor("Cupcake", "The first release of Android", R.drawable.cupcake),
                 new Flavor("Donut", "The world's information is at your fingertips – " +
@@ -50,5 +45,50 @@ public class MainActivity extends AppCompatActivity {
                 new Flavor("Lollipop", "A sweet new take on Android. Get the smarts of Android on" +
                         " screens big and small – with the right information at the right moment.",
                         R.drawable.lollipop)};
+        insertData(flavors);
+        Cursor cursor=getContentResolver().query(AndroidFlavorContract.ANDROID_FLAVOR_CONTENT,
+                new String[]{
+                        AndroidFlavorContract.FLAVORS_CONTENT.PK_COLUMN,
+                AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN,
+                AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN},
+                null,null,null);
+        SimpleCursorAdapter adapter=new SimpleCursorAdapter(this,R.layout.grid_cell,cursor,
+                new String[]{AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN,
+                        AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN},
+                new int[]{R.id.androidFlavorNameTV,R.id.androidFlavorImageIV},0);
+        adapter.setViewBinder(new GridFlavorViewBinder());
+        GridView flavorGV= (GridView) findViewById(R.id.flavors_grid);
+        flavorGV.setAdapter(adapter);
+
+    }
+
+    private void insertData(Flavor[] flavors) {
+        ContentValues[] values=new ContentValues[flavors.length];
+        for(int i=0;i<flavors.length;i++){
+            ContentValues cv=new ContentValues();
+            cv.put(AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN,flavors[i].name);
+            cv.put(AndroidFlavorContract.FLAVORS_CONTENT.DESCRITION_COLUMN,flavors[i].description);
+            cv.put(AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN,flavors[i].image);
+            values[i]=cv;
+        }
+        getContentResolver().bulkInsert(AndroidFlavorContract.ANDROID_FLAVOR_CONTENT,values);
+    }
+
+    private class GridFlavorViewBinder implements SimpleCursorAdapter.ViewBinder {
+        @Override
+        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+            switch(view.getId()){
+                case R.id.androidFlavorImageIV:
+                    byte[] data=((MatrixCursor)cursor).getBlob(columnIndex);
+                    Bitmap bmp= BitmapFactory.decodeByteArray(
+                            data,0,data.length);
+                    ((ImageView)view).setImageBitmap(bmp);
+                    return true;
+                case R.id.androidFlavorNameTV:
+                    ((TextView)view).setText(cursor.getString(columnIndex));
+                    return true;
+            }
+            return false;
+        }
     }
 }

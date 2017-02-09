@@ -23,14 +23,17 @@ public class AndroidFlavorOpenHelper extends SQLiteOpenHelper{
                 AndroidFlavorContract.FLAVORS_CONTENT._ID + " integer primary key autoincrement," +
                 AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN + " text not null," +
                 AndroidFlavorContract.FLAVORS_CONTENT.DESCRITION_COLUMN + " text," +
-                AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN + " integer)";
+                AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN + " text)";
         db.execSQL(sql);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(newVersion!=oldVersion){
-            onCreate(sqLiteDatabase);
+            db.execSQL("drop table if exist " + ANDROID_FLAVORS_TABLE);
+            onCreate(db);
         }
     }
+
+
 }
