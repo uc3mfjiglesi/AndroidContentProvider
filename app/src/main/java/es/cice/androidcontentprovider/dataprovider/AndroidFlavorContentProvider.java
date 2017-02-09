@@ -13,6 +13,17 @@ public class AndroidFlavorContentProvider extends ContentProvider {
     private static final int FLAVOR_CONTENT_URI_VALUE=100;
     private static final int FLAVOR_ITEM_URI_VALUE=200;
 
+    public static void buildMatcher(){
+        matcher=new UriMatcher(UriMatcher.NO_MATCH);
+
+        matcher.addURI(AndroidFlavorContract.AUTHORITY,
+                AndroidFlavorContract.CONTENT_URI_SEGMENT,FLAVOR_CONTENT_URI_VALUE);
+
+        matcher.addURI(AndroidFlavorContract.AUTHORITY,
+                AndroidFlavorContract.ITEM_URI_SEGMENT + "/#",FLAVOR_ITEM_URI_VALUE);
+    }
+
+
     public AndroidFlavorContentProvider() {
     }
 
@@ -71,13 +82,7 @@ public class AndroidFlavorContentProvider extends ContentProvider {
         // TODO: Implement this to initialize your content provider on startup.
         AndroidFlavorOpenHelper helper=new AndroidFlavorOpenHelper(getContext(),1);
         db=helper.getWritableDatabase();
-        matcher=new UriMatcher(UriMatcher.NO_MATCH);
-
-        matcher.addURI(AndroidFlavorContract.AUTHORITY_URI_STRING,
-                AndroidFlavorContract.CONTENT_URI_SEGMENT,FLAVOR_CONTENT_URI_VALUE);
-
-        matcher.addURI(AndroidFlavorContract.AUTHORITY_URI_STRING,
-                AndroidFlavorContract.ITEM_URI_SEGMENT + "/#",FLAVOR_ITEM_URI_VALUE);
+        buildMatcher();
         return true;
     }
 

@@ -20,9 +20,9 @@ public class AndroidFlavorOpenHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql="create table " + ANDROID_FLAVORS_TABLE +"(" +
-                AndroidFlavorContract.FLAVORS_CONTENT._ID + " integer primary key autoincrement" +
-                AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN + " text not null" +
-                AndroidFlavorContract.FLAVORS_CONTENT.DESCRITION_COLUMN + " text" +
+                AndroidFlavorContract.FLAVORS_CONTENT._ID + " integer primary key autoincrement," +
+                AndroidFlavorContract.FLAVORS_CONTENT.NAME_COLUMN + " text not null," +
+                AndroidFlavorContract.FLAVORS_CONTENT.DESCRITION_COLUMN + " text," +
                 AndroidFlavorContract.FLAVORS_CONTENT.IMAGE_ID_COLUMN + " integer)";
         db.execSQL(sql);
     }

@@ -21,8 +21,7 @@
             android:authorities="es.cice.androidcontentprovider.app"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="es.cice.androidcontentprovider.permission.READ_PROVIDER"
-            android:writePermission="es.cice.androidcontentprovider.permission.WRITE_PROVIDER"></provider>
+            ></provider>
     </application>
 
 </manifest>
