@@ -10,6 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+/**
+ * ContentProvider acerca de las versiones de android
+ */
 public class AndroidFlavorContentProvider extends ContentProvider {
     private SQLiteDatabase db;
     private static UriMatcher matcher;
@@ -20,7 +23,7 @@ public class AndroidFlavorContentProvider extends ContentProvider {
         matcher=new UriMatcher(UriMatcher.NO_MATCH);
 
         matcher.addURI(AndroidFlavorContract.AUTHORITY,
-                AndroidFlavorContract.CONTENT_URI_SEGMENT,FLAVOR_CONTENT_URI_VALUE);
+                AndroidFlavorContract.CONTENT_URI_SEGMENT,FLAVOR_CONTENT_URI_VALUE);0
 
         matcher.addURI(AndroidFlavorContract.AUTHORITY,
                 AndroidFlavorContract.ITEM_URI_SEGMENT + "/#",FLAVOR_ITEM_URI_VALUE);
