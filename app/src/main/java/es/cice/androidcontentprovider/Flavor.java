@@ -6,9 +6,9 @@ package es.cice.androidcontentprovider;
 public class Flavor {
     String name;
     String description;
-    int image;
+    String image;
 
-    public Flavor(String name, String description, int image){
+    public Flavor(String name, String description, String image){
         this.name = name;
         this.image = image;
         this.description = description;

@@ -13,6 +13,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import es.cice.androidcontentprovider.dataprovider.AndroidFlavorContract;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,29 +24,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Flavor[] flavors = {
-                new Flavor("Cupcake", "The first release of Android", R.drawable.cupcake),
+                new Flavor("Cupcake", "The first release of Android",
+                        "http://1.bp.blogspot.com/-8-Gx8v-RbdY/ToOO8dpX6tI/AAAAAAAAJVo/ETAc42UcpCI/s1600/google+1.jpg"),
                 new Flavor("Donut", "The world's information is at your fingertips – " +
                         "search the web, get driving directions... or just watch cat videos.",
-                        R.drawable.donut),
+                        "https://c1.staticflickr.com/9/8293/7729462544_bd1af317e9_b.jpg"),
                 new Flavor("Eclair", "Make your home screen just how you want it. Arrange apps " +
                         "and widgets across multiple screens and in folders. Stunning live wallpapers " +
-                        "respond to your touch.", R.drawable.eclair),
+                        "respond to your touch.",
+                        "https://androidayuda.com/app/uploads/2013/09/Android-Eclair-Donut.jpg"),
                 new Flavor("Froyo", "Voice Typing lets you input text, and Voice Actions let " +
-                        "you control your phone, just by speaking.", R.drawable.froyo),
+                        "you control your phone, just by speaking.",
+                        "http://www.androidhoy.com/wp-content/uploads/android_froyo.jpg"),
                 new Flavor("GingerBread", "New sensors make Android great for gaming - so " +
-                        "you can touch, tap, tilt, and play away.", R.drawable.gingerbread),
+                        "you can touch, tap, tilt, and play away.",
+                        "http://img.talkandroid.com/uploads/2010/11/Android-Gingerbread.jpg"),
                 new Flavor("Honeycomb", "Optimized for tablets, this release opens up new " +
-                        "horizons wherever you are.", R.drawable.honeycomb),
+                        "horizons wherever you are.",
+                        "http://www.infonucleo.com/wp-content/uploads/2011/02/honeycomb-android-illustration.jpg"),
                 new Flavor("Ice Cream Sandwich", "Android comes of age with a new, refined design. " +
-                        "Simple, beautiful and beyond smart.", R.drawable.icecream),
+                        "Simple, beautiful and beyond smart.",
+                        "http://cdn.redmondpie.com/wp-content/uploads/2011/05/Android-IceCreamSandwich.jpeg"),
                 new Flavor("Jelly Bean", "Android is fast and smooth with buttery graphics. " +
                         "With Google Now, you get just the right information at the right time.",
-                        R.drawable.jellybean),
+                        "http://media.bestofmicro.com/I/E/377798/gallery/android-41-jelly-bean-logo-640_w_400.jpg"),
                 new Flavor("KitKat", "Smart, simple, and truly yours. A more polished design, " +
-                        "improved performance, and new features.", R.drawable.kitkat),
+                        "improved performance, and new features.",
+                        "http://marketingland.com/wp-content/ml-loads/2013/09/Screen-Shot-2013-09-03-at-10.13.28-AM-300x437.png"),
                 new Flavor("Lollipop", "A sweet new take on Android. Get the smarts of Android on" +
                         " screens big and small – with the right information at the right moment.",
-                        R.drawable.lollipop)};
+                        "http://img.talkandroid.com/uploads/2014/10/android_lollipop_waving.png")};
         insertData(flavors);
         Cursor cursor=getContentResolver().query(AndroidFlavorContract.ANDROID_FLAVOR_CONTENT,
                 new String[]{
@@ -79,10 +88,11 @@ public class MainActivity extends AppCompatActivity {
         public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
             switch(view.getId()){
                 case R.id.androidFlavorImageIV:
-                    byte[] data=((MatrixCursor)cursor).getBlob(columnIndex);
-                    Bitmap bmp= BitmapFactory.decodeByteArray(
-                            data,0,data.length);
-                    ((ImageView)view).setImageBitmap(bmp);
+                    Picasso.with(getApplicationContext())
+                            .load(cursor.getString(columnIndex))
+                            .resize(100,100)
+                            .centerCrop()
+                            .into((ImageView)view);
                     return true;
                 case R.id.androidFlavorNameTV:
                     ((TextView)view).setText(cursor.getString(columnIndex));

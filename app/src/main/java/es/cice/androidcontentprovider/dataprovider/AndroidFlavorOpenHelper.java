@@ -30,7 +30,7 @@ public class AndroidFlavorOpenHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(newVersion!=oldVersion){
-            db.execSQL("drop table if exist " + ANDROID_FLAVORS_TABLE);
+            db.execSQL("drop table " + ANDROID_FLAVORS_TABLE);
             onCreate(db);
         }
     }
