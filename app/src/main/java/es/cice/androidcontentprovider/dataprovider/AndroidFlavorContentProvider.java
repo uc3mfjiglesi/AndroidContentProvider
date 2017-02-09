@@ -102,7 +102,7 @@ public class AndroidFlavorContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         // TODO: Implement this to initialize your content provider on startup.
-        AndroidFlavorOpenHelper helper=new AndroidFlavorOpenHelper(getContext(),2);
+        AndroidFlavorOpenHelper helper=new AndroidFlavorOpenHelper(getContext(),3);
         db=helper.getWritableDatabase();
         buildMatcher();
         return true;
